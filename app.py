@@ -15,8 +15,6 @@ st.set_page_config(
 )
 
 # Modern ChatGPT style UI
-# ... existing code ...
-
 st.markdown("""
     <style>
         /* Main background and text colors */
@@ -124,9 +122,24 @@ st.markdown("""
         .st-emotion-cache-1104ytp {
             color: #2c3e50;
         }
+        
+        /* Centering for app info cards */
+        .feature-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .center-icon {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
     </style>
 """, unsafe_allow_html=True)
-# ... rest of the existing code ...
+
 # Load API Key
 load_dotenv()
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
@@ -196,16 +209,16 @@ if "pdf_text" not in st.session_state:
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# Simple header
-st.title("💬 PDF Chat Assistant")
+# Enhanced header with improved icon
+st.title("🤖 PDF Chat Assistant")
 
 # Sidebar for PDF upload and controls
 with st.sidebar:
-    st.markdown("### 📁 Upload Your PDF")
+    st.markdown("### 📚 Upload Your PDF")
     uploaded_file = st.file_uploader("", type="pdf")
     
-    # Add clear chat button
-    if st.button("🗑️ Clear Chat History"):
+    # Add clear chat button with better icon
+    if st.button("🧹 Clear Chat History"):
         st.session_state.chat_history = []
         st.success("Chat history cleared!")
     
@@ -214,11 +227,66 @@ with st.sidebar:
             st.session_state.pdf_text = extract_text_from_pdf(uploaded_file)
             if st.session_state.pdf_text:
                 st.session_state.text_chunks = split_text_into_chunks(st.session_state.pdf_text)
-                st.success("PDF processed successfully!")
+                st.success("✅ PDF processed successfully!")
                 st.info(f"📄 Pages: {len(PyPDF2.PdfReader(uploaded_file).pages)}")
+                
+        # Add document details section
+        st.markdown("### 📊 Document Details")
+        st.markdown(f"**Filename:** {uploaded_file.name}")
+        st.markdown(f"**Size:** {round(uploaded_file.size/1024, 2)} KB")
 
 # Main chat interface
 if not st.session_state.pdf_text:
+    # App info section that disappears after PDF upload
+    st.markdown("## 🌟 Welcome to PDF Chat Assistant!")
+    
+    # Feature cards with icons
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+        <div class="feature-card">
+            <div class="center-icon">📚</div>
+            <h3 style="text-align: center;">Upload Any PDF</h3>
+            <p>Support for all types of PDF documents, including technical papers, books, and reports.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="feature-card">
+            <div class="center-icon">🔍</div>
+            <h3 style="text-align: center;">Smart Search</h3>
+            <p>Advanced algorithms to find precise information within your documents.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="feature-card">
+            <div class="center-icon">💬</div>
+            <h3 style="text-align: center;">Natural Conversations</h3>
+            <p>Ask questions in plain language and get meaningful responses.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="feature-card">
+            <div class="center-icon">🚀</div>
+            <h3 style="text-align: center;">Powered by Gemini</h3>
+            <p>Using Google's powerful Gemini AI to deliver accurate and helpful answers.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # How to use section
+    st.markdown("## 🔰 How to Use")
+    st.markdown("""
+    1. **Upload your PDF** using the sidebar on the left
+    2. **Wait** for processing to complete
+    3. **Ask questions** about the content of your PDF
+    4. **Get instant answers** powered by AI
+    """)
+    
+    # Call to action
     st.info("👈 Please upload a PDF document to start chatting")
 else:
     # Chat input
