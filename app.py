@@ -177,7 +177,7 @@ def get_answer(query, text_chunks):
     # First try to find answer in PDF
     for chunk in text_chunks:
         prompt = f"Context:\n{chunk}\n\nQuestion: {query}\nAnswer:"
-        model = genai.GenerativeModel("gemini-1.5-pro")
+        model = genai.GenerativeModel("gemini-2.0-flash")
         try:
             response = model.generate_content(prompt)
             if response.text and "does not contain the answer" not in response.text.lower():
