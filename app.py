@@ -189,7 +189,7 @@ def get_answer(query, text_chunks):
     
     # If answer not found in PDF, use Gemini for general knowledge
     try:
-        model = genai.GenerativeModel("gemini-1.5-pro")
+        model = genai.GenerativeModel("gemini-2.0-flash")
         prompt = f"""Please provide a detailed and accurate answer to this question: {query}
 
 Rules:
