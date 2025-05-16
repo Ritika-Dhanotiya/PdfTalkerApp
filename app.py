@@ -142,7 +142,7 @@ st.markdown("""
 
 # Load API Key
 load_dotenv()
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+genai.configure(api_key="AIzaSyDietYE2i25i_EyNULT9RiNZlD64PoLZY8")
 
 @st.cache_data(ttl=24*3600, max_entries=1000)
 def extract_text_from_pdf(uploaded_file):
